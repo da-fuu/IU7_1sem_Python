@@ -27,3 +27,22 @@ def print_head():
 def print_entry(entry):
     print('|{:^15}|{:^11}| {:<8}|'.format(entry[0].decode().rstrip('\x00'), entry[1].decode().rstrip('\x00'),
                                           str(entry[2])))
+
+
+def check_column_num(column: str):
+    return column.isdigit() and 0 < int(column) <= 4
+
+
+def check_target(target: str, column: int):
+    if column == 0:
+        return 0 < len(target) <= 15
+    if column == 1:
+        return 0 < len(target) <= 11
+    if column == 2:
+        return target.isdigit() and 256 > int(target) > 0
+
+
+def check_field(field, target, column):
+    if column == 2:
+        return field == int(target)
+    return field.decode().rstrip('\x00') == target

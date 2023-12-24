@@ -1,24 +1,28 @@
-def main(filename):
-    first = 0
-    column = input('Введите номер поля поиска: ').strip()
-    while not (column.isdigit() and 0 < int(column) <= 4):
-        column = input('Введите корректный номер поля поиска: ').strip()
-    target = input('Введите значение для поиска: ').strip()
-    if column == '4':
-        while not check_float(target):
-            target = input('Введите корректное значение для поиска: ').strip()
-        target = str(round(float(target), 5))
-    elif column == '3':
-        while not target.isdigit():
-            target = input('Введите корректное значение для поиска: ').strip()
-    column = int(column) - 1
+from utils import check_column_num, check_target, get_size, print_head, print_entry, check_field
+from struct import unpack, calcsize
 
-    with open(filename, 'r') as file:
-        for entry in file:
-            if entry.split(';')[column] == target:
+
+def main(filename, structure):
+    column = input('Введите номер поля поиска: ').strip()
+    while not check_column_num(column):
+        column = input('Введите корректный номер поля поиска: ').strip()
+    column = int(column) - 1
+    target = input('Введите значение для поиска: ').strip()
+    while not check_target(target, column):
+        target = input('Введите корректное значение для поиска: ').strip()
+
+    entry_size = calcsize(structure)
+    lines = get_size(filename) // entry_size
+    first = False
+
+    with open(filename, 'rb') as file:
+        for i in range(lines):
+            entry = file.read(entry_size)
+            entry = unpack(structure, entry)
+            if check_field(entry[column], target, column):
                 if not first:
-                    first = 1
-                    print('|{:^15}|{:^11}|{:^9}|{:^10}|'.format('Фамилия', 'Группа', 'Возраст', 'Коофициент'))
-                print('|{:^15}|{:^11}|{:^9}|{:^10}|'.format(*entry.split(';')))
+                    first = True
+                    print_head()
+                print_entry(entry)
     if not first:
         print('Ничего не найдено')

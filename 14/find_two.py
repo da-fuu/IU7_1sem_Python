@@ -1,21 +1,31 @@
-def main(filename):
-    first = 0
-    column = input('Введите номера полей поиска через пробел: ').split()
-    while not (len(column) == 2 and all([i.isdigit() and 0 < int(i) <= 4 for i in column])):
-        column = input('Введите корректные два номера полей поиска через пробел: ').split()
-    column = [int(i) - 1 for i in column]
+from utils import check_column_num, check_target, get_size, print_head, print_entry, check_field
+from struct import unpack, calcsize
+
+
+def main(filename, structure):
+    columns = input('Введите номера полей поиска через пробел: ').split()
+    while not (len(columns) == 2 and all([check_column_num(i) for i in columns])):
+        columns = input('Введите корректные два номера полей поиска через пробел: ').split()
+    columns = [int(i) - 1 for i in columns]
     targets = []
-    for i in column:
-        target = input('Введите значение для поиска в {:}-ом столбце: '.format(i+1)).strip()
-        while not (target and (target.isdigit() if i == 2 else True) and (check_float(target) if i == 3 else True)):
-            target = input('Введите корректное значение для поиска в {:}-ом столбце: '.format(i+1)).strip()
-        targets.append(target if i != 3 else str(round(float(target), 5)))
-    with open(filename, 'r') as file:
-        for entry in file:
-            if entry.split(';')[column[0]] == targets[0] and entry.split(';')[column[1]] == targets[1]:
+    for i in columns:
+        target = input('Введите значение для поиска в {:}-ом столбце: '.format(i + 1)).strip()
+        while not check_target(target, i):
+            target = input('Введите корректное значение для поиска в {:}-ом столбце: '.format(i + 1)).strip()
+        targets.append(target)
+
+    entry_size = calcsize(structure)
+    lines = get_size(filename) // entry_size
+    first = False
+
+    with open(filename, 'rb') as file:
+        for i in range(lines):
+            entry = file.read(entry_size)
+            entry = unpack(structure, entry)
+            if all(check_field(entry[columns[j]], targets[j], columns[j]) for j in range(2)):
                 if not first:
-                    first = 1
-                    print('|{:^15}|{:^11}|{:^9}|{:^10}|'.format('Фамилия', 'Группа', 'Возраст', 'Коофициент'))
-                print('|{:^15}|{:^11}|{:^9}|{:^10}|'.format(*entry.split(';')))
+                    first = True
+                    print_head()
+                print_entry(entry)
     if not first:
         print('Ничего не найдено')

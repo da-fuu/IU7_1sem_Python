@@ -15,7 +15,7 @@ import find_two
 def check_filename(filename):
     existence = os.path.isfile(filename)
     try:
-        file = open(filename, 'a')
+        file = open(filename, 'ab')
     except OSError:
         return False
     else:
