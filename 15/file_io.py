@@ -1,6 +1,13 @@
+# Общие функции работы с файлом
+
+# Подключение модулей
 from struct import pack, calcsize, unpack
 
+# Формат числа
+fmt = '<l'
 
+
+# Получение размера файла
 def get_size(filename):
     with open(filename, 'rb') as file:
         file.seek(0, 2)
@@ -8,6 +15,7 @@ def get_size(filename):
         return size
 
 
+# Проверка пути файла
 def check_filename(filename):
     try:
         with open(filename, 'wb'):
@@ -16,6 +24,7 @@ def check_filename(filename):
         return False
 
 
+# Ввод числа
 def ask_for_number(ind):
     num = input('Введите {:}-ое число: '.format(ind)).strip()
     while not ((num[1:] if num[0] == '-' else num).isdigit() and 2**31 > int(num) >= -2**31):
@@ -23,6 +32,7 @@ def ask_for_number(ind):
     return int(num)
 
 
+# Инициализация файла
 def initialize(filename):
     entry_num = input('Введите количество чисел: ').strip()
     while not (entry_num.isdigit() and int(entry_num) > 0):
@@ -34,6 +44,7 @@ def initialize(filename):
             file.write(pack('<l', entry))
 
 
+# Вывод всех чисел из файла
 def print_file(filename):
     size = calcsize('<l')
     nums = get_size(filename) // size
@@ -48,6 +59,7 @@ def print_file(filename):
             print(entry[0])
 
 
+# Ввод пути файла и его инициализация
 def start():
     filename = input('Введите путь файла: ').strip()
     while not check_filename(filename):
