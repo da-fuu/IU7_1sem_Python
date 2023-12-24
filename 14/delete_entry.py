@@ -7,7 +7,7 @@ def main(filename, structure):
     lines = get_size(filename) // entry_size
     line = input('Введите номер удаляемой записи: ').strip()
     while not (line.isdigit() and 0 < int(line) <= lines):
-        line = input('Введите корректный номер номер удаляемой записи: ').strip()
+        line = input('Введите корректный номер удаляемой записи: ').strip()
     line = int(line)
     with open(filename, 'r+b') as file:
         file.seek((line - 1) * entry_size)

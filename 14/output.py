@@ -1,9 +1,9 @@
 from struct import unpack, calcsize
-from utils import get_size
+from utils import get_size, print_head
 
 
 def main(filename, structure):
-    print('|{:^15}|{:^11}|{:^9}'.format('Фамилия', 'Группа', 'Возраст'))
+    print_head()
     entry_size = calcsize(structure)
     lines = get_size(filename) // entry_size
     with open(filename, 'rb') as file:
