@@ -1,8 +1,11 @@
+# Поиск по одному полю
+
 from utils import check_column_num, check_target, get_size, print_head, print_entry, check_field
 from struct import unpack, calcsize
 
 
 def main(filename, structure):
+    # Ввод искомых значений
     column = input('Введите номер поля поиска: ').strip()
     while not check_column_num(column):
         column = input('Введите корректный номер поля поиска: ').strip()
@@ -15,6 +18,7 @@ def main(filename, structure):
     lines = get_size(filename) // entry_size
     first = False
 
+    # Поиск и вывод
     with open(filename, 'rb') as file:
         for i in range(lines):
             entry = file.read(entry_size)

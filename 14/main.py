@@ -1,6 +1,7 @@
-# Жаринов Михаил ИУ7-12Б Лабораторная работа №13
-# База данных
+# Жаринов Михаил ИУ7-12Б Лабораторная работа №14
+# База данных на бинарных файлах
 
+# Подключение модулей
 import os
 import struct
 from utils import get_size
@@ -12,6 +13,7 @@ import find_one
 import find_two
 
 
+# Проверка корректности имени файла
 def check_filename(filename):
     existence = os.path.isfile(filename)
     try:
@@ -25,6 +27,7 @@ def check_filename(filename):
         return True
 
 
+# Проверка файла на соответствие структуре БД
 def check_initialization(filename, size_target):
     if not os.path.isfile(filename):
         return False
@@ -32,6 +35,7 @@ def check_initialization(filename, size_target):
     return size > 0 and size % size_target == 0
 
 
+# Вывод меню
 def print_menu():
     print('0. Завершить программу.')
     print('1. Выбрать файл для работы.')
@@ -43,6 +47,7 @@ def print_menu():
     print('7. Поиск по двум полям.')
 
 
+# Основная функция
 def main():
     structure = '!30s22sB'
     size = struct.calcsize(structure)
@@ -58,6 +63,8 @@ def main():
     filename = ''
     initialized = False
     num_op = len(operations) + 1
+
+    # Основной цикл программы
     while True:
         print_menu()
         input_choose = input(f'Введите число от 0 до {num_op}: ').strip()
@@ -65,6 +72,7 @@ def main():
             print('Введите корректное число!')
             continue
         choose = int(input_choose)
+
         if choose == 0:
             return
         if choose > 1 and filename == '':
@@ -73,6 +81,7 @@ def main():
         if choose > 2 and not initialized:
             print('Сначала проинициализируйте БД!')
             continue
+
         if choose == 1:
             new_filename = input('Введите путь файла: ')
             while not check_filename(new_filename):
@@ -83,6 +92,7 @@ def main():
                     continue
             filename = new_filename
             initialized = check_initialization(filename, size)
+
         else:
             operations[choose-2](filename, structure)
             initialized = check_initialization(filename, size)

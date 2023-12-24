@@ -1,3 +1,5 @@
+# Инициализация БД
+
 from struct import pack
 from utils import ask_for_entry
 

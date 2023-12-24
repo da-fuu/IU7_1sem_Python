@@ -1,3 +1,5 @@
+# Вывод всей БД
+
 from struct import unpack, calcsize
 from utils import get_size, print_head, print_entry
 
