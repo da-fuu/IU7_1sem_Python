@@ -37,6 +37,9 @@ def initialize(filename):
 def print_file(filename):
     size = calcsize('<l')
     nums = get_size(filename) // size
+    if nums == 0:
+        print('Получившийся файл пуст')
+        return
     with open(filename, 'rb') as file:
         print('Получившийся файл:')
         for i in range(nums):
