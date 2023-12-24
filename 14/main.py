@@ -13,14 +13,14 @@ import find_two
 
 
 def check_filename(filename):
-    existance = os.path.isfile(filename)
+    existence = os.path.isfile(filename)
     try:
         file = open(filename, 'a')
     except OSError:
         return False
     else:
         file.close()
-        if not existance:
+        if not existence:
             os.remove(filename)
         return True
 
@@ -57,10 +57,11 @@ def main():
     ]
     filename = ''
     initialized = False
+    num_op = len(operations) + 1
     while True:
         print_menu()
-        input_choose = input('Введите число от 0 до 7: ').strip()
-        if not (input_choose.isdigit() and 0 <= int(input_choose) <= 7):
+        input_choose = input(f'Введите число от 0 до {num_op}: ').strip()
+        if not (input_choose.isdigit() and 0 <= int(input_choose) <= num_op):
             print('Введите корректное число!')
             continue
         choose = int(input_choose)

@@ -19,4 +19,11 @@ def ask_for_entry(ind):
 
 
 def print_head():
-    print('|{:^15}|{:^11}|{:^9}'.format('Фамилия', 'Группа', 'Возраст'))
+    print('-' * 39)
+    print('|{:^15}|{:^11}|{:^9}|'.format('Фамилия', 'Группа', 'Возраст'))
+    print('-' * 39)
+
+
+def print_entry(entry):
+    print('|{:^15}|{:^11}| {:<8}|'.format(entry[0].decode().rstrip('\x00'), entry[1].decode().rstrip('\x00'),
+                                          str(entry[2])))
