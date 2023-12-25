@@ -8,6 +8,14 @@ def get_size(filename):
         return size
 
 
+def evaluate(age):
+    try:
+        return eval(age)
+
+    except (SyntaxError, NameError, TypeError, ZeroDivisionError):
+        return None
+
+
 # Ввод строки таблицы
 def ask_for_entry(ind):
     surname = input('Введите фамилию {:}-ого студента: '.format(ind)).strip()
@@ -19,10 +27,20 @@ def ask_for_entry(ind):
         group = input('Введите корректную группу {:}-ого студента: '.format(ind)).strip()
 
     age = input('Введите возраст {:}-ого студента: '.format(ind)).strip()
-    while not (age.isdigit() and 256 > int(age) > 0):
+    while not check_age(age):
         age = input('Введите корректный возраст {:}-ого студента: '.format(ind)).strip()
 
-    return surname.encode(), group.encode(), int(age)
+    return surname.encode(), group.encode(), evaluate(age)
+
+
+def check_age(age):
+    if len(age) == 0:
+        return False
+    for s in age:
+        if s not in '-*+//0123456789':
+            return False
+    res = evaluate(age)
+    return type(res) is int and 0 < res < 256
 
 
 # Вывод заголовка таблицы
