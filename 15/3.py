@@ -19,17 +19,12 @@ def write_file(file, ind, num1, num2, num_size):
 
 
 # Сортировка
-def shaker_sort(filename, length, num_size):
+def bubble_sort(filename, length, num_size):
     with open(filename, 'r+b') as file:
-        for i in range(length - 1, 0, -1):
-            for j in range(i - 1, -1, -1):
+        for i in range(length - 1):
+            for j in range(length - i - 1):
                 num = read_file(file, j, num_size)
-                if num[1] < num[0]:
-                    write_file(file, j, num[1], num[0], num_size)
-
-            for j in range(i):
-                num = read_file(file, j, num_size)
-                if num[1] < num[0]:
+                if num[0] > num[1]:
                     write_file(file, j, num[1], num[0], num_size)
 
 
@@ -38,7 +33,7 @@ def main():
     filename = start()
     size = calcsize('<l')
     nums = get_size(filename) // size
-    shaker_sort(filename, nums, size)
+    bubble_sort(filename, nums, size)
     print_file(filename)
 
 
